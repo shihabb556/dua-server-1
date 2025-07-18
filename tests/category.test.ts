@@ -4,7 +4,7 @@ import app from "../src/app";
 
 describe("Category Routes", () => {
     it("should return all categories", async () => {
-        const response = await request(app).get("/api/categories");
+        const response = await request(app).get("/api/categories"); 
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
     });

@@ -1,21 +1,28 @@
 import { Request, Response, NextFunction } from "express";
 import db from "../db/config";
+import { ApiResponse } from "@/types/api.types";
+import { Dua } from "@/types";
 
 
 //get all duas
 // GET /api/duas
-export const getDuas = async (req: Request, res: Response, next: NextFunction) => {
+export const getDuas = async (req: Request, res: Response<ApiResponse<Dua[]>>, next: NextFunction) => {
     try {
-        const duas = await db.prepare("SELECT * FROM dua").all();
+        const duas: Dua[] = await db.prepare("SELECT * FROM dua").get() as Dua[];
 
         if(!duas){
             return res.status(404).json({
-                succes:false,
-                message: "Duas not found"
+                success:false,
+                message: "Duas not found",
+                data: []
             })
         }
       
-        res.status(200).json(duas);
+        res.status(200).json({
+            success:false,
+            message: "Duas found",
+            data: duas
+        });
     } catch (error) {
         next(error);
     }
@@ -26,7 +33,7 @@ export const getDuas = async (req: Request, res: Response, next: NextFunction) =
 export const getDuaById = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const dua = await db.prepare("SELECT * FROM dua WHERE id = ?").all(id);
+        const dua = await db.prepare("SELECT * FROM dua WHERE id = ?").get(id);
 
         if (!dua) {
             return res.status(404).json({
@@ -55,7 +62,7 @@ export const getDuasByCategoryId = async (req: Request, res: Response, next: Nex
           return res.status(404).json({ success: false, message: `Category: ${id} does not exist`});
         }
 
-        const duas = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").all(id);
+        const duas = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").get(id);
 
         if(!duas){
             return res.status(404).json({
@@ -85,7 +92,7 @@ export const getDuasBySubcategoryId = async (req: Request, res: Response, next: 
           return res.status(404).json({ message: `Subcategory: ${id}  does not exist`});
         }
 
-        const duas = await db.prepare("SELECT * FROM dua WHERE subcat_id = ?").all(id);
+        const duas = await db.prepare("SELECT * FROM dua WHERE subcat_id = ?").get(id);
 
         if(!duas){
             return res.status(404).json({
