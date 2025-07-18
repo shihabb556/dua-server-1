@@ -5,3 +5,5 @@ const router = Router();
 
 router.get("/", getCategories);
 router.get("/:id", getSubcategoriesByCategoryId);
+
+export default router;
