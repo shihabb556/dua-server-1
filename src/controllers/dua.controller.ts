@@ -7,6 +7,13 @@ import db from "../db/config";
 export const getDuas = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const duas = await db.prepare("SELECT * FROM dua").all();
+
+        if(!duas){
+            return res.status(404).json({
+                succes:false,
+                message: "Duas not found"
+            })
+        }
       
         res.status(200).json(duas);
     } catch (error) {
@@ -22,10 +29,16 @@ export const getDuaById = async (req: Request, res: Response, next: NextFunction
         const dua = await db.prepare("SELECT * FROM dua WHERE id = ?").all(id);
 
         if (!dua) {
-            return res.status(404).json({ message: "Dua not found" });
+            return res.status(404).json({
+                 succes:false,
+                 message: "Dua not found" 
+                });
           }
 
-        res.status(200).json(dua);
+        res.status(200).json({
+            success:true,
+            dua
+        });
     } catch (error) {
         next(error);
     }
@@ -39,18 +52,22 @@ export const getDuasByCategoryId = async (req: Request, res: Response, next: Nex
         const category = await db.prepare("SELECT 1 FROM category WHERE cat_id = ?").get(id);
 
         if (!category) {
-          return res.status(404).json({ message: `Category: ${id} does not exist`});
+          return res.status(404).json({ success: false, message: `Category: ${id} does not exist`});
         }
 
         const duas = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").all(id);
 
         if(!duas){
             return res.status(404).json({
-                message: "Duas not found for this category:",id
+                success:false,
+                message: `Duas not found for this category: ${id}`
             })
         }
 
-        res.status(200).json(duas);
+        res.status(200).json({
+            success: true,
+            duas
+        });
     } catch (error) {
         next(error);
     }
@@ -72,11 +89,14 @@ export const getDuasBySubcategoryId = async (req: Request, res: Response, next: 
 
         if(!duas){
             return res.status(404).json({
-                message: "Duas not found for this sub_category id:", id
+                message: `Duas not found for this sub_category id: ${id}`,
             })
         }
 
-        res.status(200).json(duas);
+        res.status(200).json({
+            success: true,
+            duas
+        });
     } catch (error) {
         next(error);
     }
