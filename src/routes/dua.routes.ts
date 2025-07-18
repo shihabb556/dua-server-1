@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getDuas, getDuaById, getDuasByCategoryId, getDuasBySubcategoryId } from "@/controllers/dua.controller";
+import { getDuas, getDuaById, getDuasByCategoryId, getDuasBySubcategoryId } from "../controllers/dua.controller";
 
 const router = Router();
 

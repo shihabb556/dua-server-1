@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { notFoundHandler, errorHandler } from "@/middlewares/error.middleware";
-import categoryRoutes from "@/routes/category.routes";
-import duaRoutes from "@/routes/dua.routes";
+import { notFoundHandler, errorHandler } from "./middlewares/error.middleware";
+import categoryRoutes from "./routes/category.routes";
+import duaRoutes from "./routes/dua.routes";
 
 const app = express();
 

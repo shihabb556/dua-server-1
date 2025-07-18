@@ -1,6 +1,6 @@
 import request from "supertest";
 import { describe, it, expect } from "vitest";
-import app from "@/app";
+import app from "../src/app";
 
 describe("Dua Routes", () => {
     it("should return all duas", async () => {

@@ -29,7 +29,7 @@ export const getCategoryById = async (req: Request, res: Response, next: NextFun
 export const getSubcategoriesByCategoryId = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const subcategories = await db.prepare("SELECT * FROM subcategory WHERE category_id = ?").all(id);
+        const subcategories = await db.prepare("SELECT * FROM sub_category WHERE cat_id = ?").all(id);
         res.status(200).json(subcategories);
     } catch (error) {
         next(error);
