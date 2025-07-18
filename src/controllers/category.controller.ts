@@ -12,6 +12,18 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
     }
 };
 
+//get category by id
+// GET /api/categories/:id
+export const getCategoryById = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+        const category = await db.prepare("SELECT * FROM category WHERE id = ?").get(id);
+        res.status(200).json(category);
+    } catch (error) {
+        next(error);
+    }
+};
+
 //get subcategories by category id
 // GET /api/categories/:id/subcategories
 export const getSubcategoriesByCategoryId = async (req: Request, res: Response, next: NextFunction) => {
