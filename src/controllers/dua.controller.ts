@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import db from "../db/config";
 import { ApiResponse } from "@/types/api.types";
-import { Dua } from "@/types";
+import { Category, Dua } from "@/types";
 
 
 //get all duas
@@ -30,21 +30,23 @@ export const getDuas = async (req: Request, res: Response<ApiResponse<Dua[]>>, n
 
 //get dua by id
 // GET /api/duas/:id
-export const getDuaById = async (req: Request, res: Response, next: NextFunction) => {
+export const getDuaById = async (req: Request, res: Response<ApiResponse<Dua>>, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const dua = await db.prepare("SELECT * FROM dua WHERE id = ?").get(id);
+        const dua: Dua = await db.prepare("SELECT * FROM dua WHERE id = ?").get(id) as Dua;
 
         if (!dua) {
             return res.status(404).json({
-                 succes:false,
-                 message: "Dua not found" 
+                 success:false,
+                 message: "Dua not found" ,
+                data: null
                 });
           }
 
         res.status(200).json({
             success:true,
-            dua
+            message: "Dua found",
+            data: dua
         });
     } catch (error) {
         next(error);
@@ -53,27 +55,29 @@ export const getDuaById = async (req: Request, res: Response, next: NextFunction
 
 //get duas by category id
 // GET /api/duas/category/:id
-export const getDuasByCategoryId = async (req: Request, res: Response, next: NextFunction) => {
+export const getDuasByCategoryId = async (req: Request, res: Response<ApiResponse<Dua[]>>, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const category = await db.prepare("SELECT 1 FROM category WHERE cat_id = ?").get(id);
+        const category: Category = await db.prepare("SELECT 1 FROM category WHERE cat_id = ?").get(id) as Category;
 
         if (!category) {
-          return res.status(404).json({ success: false, message: `Category: ${id} does not exist`});
+          return res.status(404).json({ success: false, message: `Category: ${id} does not exist`, data: null});
         }
 
-        const duas = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").get(id);
+        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").get(id) as Dua[];
 
         if(!duas){
             return res.status(404).json({
                 success:false,
-                message: `Duas not found for this category: ${id}`
+                message: `Duas not found for this category: ${id}`,
+                data: []
             })
         }
 
         res.status(200).json({
             success: true,
-            duas
+            message: "Duas found",
+            data:duas
         });
     } catch (error) {
         next(error);
@@ -82,27 +86,30 @@ export const getDuasByCategoryId = async (req: Request, res: Response, next: Nex
 
 //get duas by subcategory id
 // GET /api/duas/subcategory/:id
-export const getDuasBySubcategoryId = async (req: Request, res: Response, next: NextFunction) => {
+export const getDuasBySubcategoryId = async (req: Request, res: Response<ApiResponse<Dua[]>>, next: NextFunction) => {
     const { id } = req.params;
     try {
 
         const subcategory = await db.prepare("SELECT 1 FROM sub_category WHERE subcat_id = ?").get(id);
 
         if (!subcategory) {
-          return res.status(404).json({ message: `Subcategory: ${id}  does not exist`});
+          return res.status(404).json({ success:false,message: `Subcategory: ${id}  does not exist`, data: null});
         }
 
-        const duas = await db.prepare("SELECT * FROM dua WHERE subcat_id = ?").get(id);
+        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE subcat_id = ?").get(id) as Dua[];
 
         if(!duas){
             return res.status(404).json({
+                success: false,
                 message: `Duas not found for this sub_category id: ${id}`,
+                data: []
             })
         }
 
         res.status(200).json({
             success: true,
-            duas
+            message: "Duas Found",
+            data:duas
         });
     } catch (error) {
         next(error);
