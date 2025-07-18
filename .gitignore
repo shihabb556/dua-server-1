@@ -90,10 +90,6 @@ temp/
 logs
 *.log
 
-# Database files
-*.sqlite
-*.sqlite3
-*.db
 
 # IDE files
 .vscode/
