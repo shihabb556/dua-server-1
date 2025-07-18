@@ -14,8 +14,8 @@ if (process.env.NODE_ENV === "development") {
 }
  
 // // Routes
-app.use('/api/categories', categoryRoutes);
-app.use('/api/duas', duaRoutes);
+app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/duas', duaRoutes);
 
 // Error Handling
 app.use(notFoundHandler);
