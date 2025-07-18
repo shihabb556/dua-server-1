@@ -8,7 +8,7 @@ import { Category, Dua } from "@/types";
 // GET /api/duas
 export const getDuas = async (req: Request, res: Response<ApiResponse<Dua[]>>, next: NextFunction) => {
     try {
-        const duas: Dua[] = await db.prepare("SELECT * FROM dua").get() as Dua[];
+        const duas: Dua[] = await db.prepare("SELECT * FROM dua").all() as Dua[];
 
         if(!duas){
             return res.status(404).json({
@@ -21,7 +21,8 @@ export const getDuas = async (req: Request, res: Response<ApiResponse<Dua[]>>, n
         res.status(200).json({
             success:false,
             message: "Duas found",
-            data: duas
+            data: duas,
+            total_count: duas.length
         });
     } catch (error) {
         next(error);
@@ -64,7 +65,7 @@ export const getDuasByCategoryId = async (req: Request, res: Response<ApiRespons
           return res.status(404).json({ success: false, message: `Category: ${id} does not exist`, data: null});
         }
 
-        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").get(id) as Dua[];
+        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").all(id) as Dua[];
 
         if(!duas){
             return res.status(404).json({
@@ -74,10 +75,12 @@ export const getDuasByCategoryId = async (req: Request, res: Response<ApiRespons
             })
         }
 
+
         res.status(200).json({
             success: true,
             message: "Duas found",
-            data:duas
+            data:duas,
+            total_count: duas.length
         });
     } catch (error) {
         next(error);
@@ -96,7 +99,7 @@ export const getDuasBySubcategoryId = async (req: Request, res: Response<ApiResp
           return res.status(404).json({ success:false,message: `Subcategory: ${id}  does not exist`, data: null});
         }
 
-        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE subcat_id = ?").get(id) as Dua[];
+        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE subcat_id = ?").all(id) as Dua[];
 
         if(!duas){
             return res.status(404).json({
@@ -109,7 +112,8 @@ export const getDuasBySubcategoryId = async (req: Request, res: Response<ApiResp
         res.status(200).json({
             success: true,
             message: "Duas Found",
-            data:duas
+            data:duas,
+            total_count: duas.length
         });
     } catch (error) {
         next(error);

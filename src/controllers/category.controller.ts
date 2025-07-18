@@ -7,7 +7,7 @@ import { Category, SubCategory } from "../types";
 // GET /api/categories
 export const getCategories = async (req: Request, res: Response<ApiResponse<Category[]>>, next: NextFunction) => {
     try {
-        const categories = await db.prepare("SELECT * FROM category").get() as Category[];
+        const categories = await db.prepare("SELECT * FROM category").all() as Category[];
         
         if(!categories){
             return res.status(404).json({
@@ -19,7 +19,8 @@ export const getCategories = async (req: Request, res: Response<ApiResponse<Cate
         res.status(200).json({
             success: true,
             message: "Categories Found",
-            data:categories
+            data:categories,
+            total_count: categories.length
         });
     } catch (error) {
         next(error);
@@ -54,7 +55,7 @@ export const getCategoryById = async (req: Request, res: Response<ApiResponse<Ca
 export const getSubcategoriesByCategoryId = async (req: Request, res: Response<ApiResponse<SubCategory[]>>, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const subcategories: SubCategory[] = await db.prepare("SELECT * FROM sub_category WHERE cat_id = ?").get(id) as SubCategory[];
+        const subcategories: SubCategory[] = await db.prepare("SELECT * FROM sub_category WHERE cat_id = ?").all(id) as SubCategory[];
 
         if(!subcategories){
             return res.status(404).json({
@@ -67,6 +68,7 @@ export const getSubcategoriesByCategoryId = async (req: Request, res: Response<A
             success: true,
             message: "sub_categories found",
             data:subcategories,
+            total_count: subcategories.length
         });
     } catch (error) {
         next(error);

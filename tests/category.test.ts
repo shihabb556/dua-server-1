@@ -4,19 +4,19 @@ import app from "../src/app";
 
 describe("Category Routes", () => {
     it("should return all categories", async () => {
-        const response = await request(app).get("/api/categories"); 
+        const response = await request(app).get("/api/v1/categories"); 
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
     });
 
     it("should return a category by id", async () => {
-        const response = await request(app).get("/api/categories/1");
+        const response = await request(app).get("/api/v1/categories/1");
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
     });
 
     it("should return subcategories by category id", async () => {
-        const response = await request(app).get("/api/categories/1/subcategories");
+        const response = await request(app).get("/api/v1/categories/1/subcategories");
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
     });

@@ -3,6 +3,9 @@
 ## Overview
 This API provides endpoints to manage and retrieve categories, subcategories, and duas (prayers). It is built with Express and uses SQLite as the database.
 
+**API Versioning:**
+All endpoints are versioned under `/api/v1/`. For future changes, new versions can be added as `/api/v2/`, etc.
+
 ---
 
 ## Response Format
@@ -21,7 +24,7 @@ All endpoints return a JSON response in the following format:
 ## Category Endpoints
 
 ### Get All Categories
-- **URL:** `GET /api/categories`
+- **URL:** `GET /api/v1/categories`
 - **Response:**
   - `200 OK` with list of categories
   - `404 Not Found` if no categories
@@ -45,13 +48,13 @@ All endpoints return a JSON response in the following format:
 ```
 
 ### Get Category by ID
-- **URL:** `GET /api/categories/:id`
+- **URL:** `GET /api/v1/categories/:id`
 - **Response:**
   - `200 OK` with category object
   - `404 Not Found` if not found
 
 ### Get Subcategories by Category ID
-- **URL:** `GET /api/categories/:id/subcategories`
+- **URL:** `GET /api/v1/categories/:id/subcategories`
 - **Response:**
   - `200 OK` with list of subcategories
   - `404 Not Found` if not found
@@ -61,25 +64,25 @@ All endpoints return a JSON response in the following format:
 ## Dua Endpoints
 
 ### Get All Duas
-- **URL:** `GET /api/duas`
+- **URL:** `GET /api/v1/duas`
 - **Response:**
   - `200 OK` with list of duas
   - `404 Not Found` if not found
 
 ### Get Dua by ID
-- **URL:** `GET /api/duas/:id`
+- **URL:** `GET /api/v1/duas/:id`
 - **Response:**
   - `200 OK` with dua object
   - `404 Not Found` if not found
 
 ### Get Duas by Category ID
-- **URL:** `GET /api/duas/category/:id`
+- **URL:** `GET /api/v1/duas/category/:id`
 - **Response:**
   - `200 OK` with list of duas for the category
   - `404 Not Found` if not found
 
 ### Get Duas by Subcategory ID
-- **URL:** `GET /api/duas/subcategory/:id`
+- **URL:** `GET /api/v1/duas/subcategory/:id`
 - **Response:**
   - `200 OK` with list of duas for the subcategory
   - `404 Not Found` if not found
@@ -157,5 +160,5 @@ export type ApiResponse<T> = {
 
 ## Notes
 - All endpoints are `GET` requests.
-- The API is versionless and all endpoints are prefixed with `/api/`.
+- The API is versioned under `/api/v1/`.
 - For more details, see the source code in the `src/controllers` and `src/routes` directories. 
