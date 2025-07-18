@@ -6,7 +6,16 @@ import { Request, Response, NextFunction } from "express";
 export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const categories = await db.prepare("SELECT * FROM category").all();
-        res.status(200).json(categories);
+        if(!categories){
+            return res.status(404).json({
+                success: false,
+                message: "Categories not found"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            categories
+        });
     } catch (error) {
         next(error);
     }
@@ -18,6 +27,12 @@ export const getCategoryById = async (req: Request, res: Response, next: NextFun
     const { id } = req.params;
     try {
         const category = await db.prepare("SELECT * FROM category WHERE id = ?").get(id);
+        if(!category){
+            return res.status(404).json({
+                success: false,
+                message: "Category not found"
+            })
+        }
         res.status(200).json(category);
     } catch (error) {
         next(error);
@@ -30,6 +45,12 @@ export const getSubcategoriesByCategoryId = async (req: Request, res: Response, 
     const { id } = req.params;
     try {
         const subcategories = await db.prepare("SELECT * FROM sub_category WHERE cat_id = ?").all(id);
+        if(!subcategories){
+            return res.status(404).json({
+                success: false,
+                message: "sub_categories not found"
+            })
+        }
         res.status(200).json(subcategories);
     } catch (error) {
         next(error);
