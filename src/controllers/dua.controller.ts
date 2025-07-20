@@ -65,13 +65,13 @@ export const getDuasByCategoryId = async (req: Request, res: Response<ApiRespons
           return res.status(404).json({ success: false, message: `Category: ${id} does not exist`, data: null});
         }
 
-        const duas: Dua[] = await db.prepare("SELECT * FROM dua WHERE cat_id = ?").all(id) as Dua[];
+        const duas: Dua[] =  db.prepare("SELECT * FROM dua WHERE cat_id = ?").all(id) as Dua[];
 
         if(!duas){
             return res.status(404).json({
                 success:false,
                 message: `Duas not found for this category: ${id}`,
-                data: []
+              
             })
         }
 

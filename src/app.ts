@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import { notFoundHandler, errorHandler } from "./middlewares/error.middleware";
-import categoryRoutes from "./routes/category.routes";
+import duaCategoryRoutes from "./routes/dua-categories.routes";
 import duaRoutes from "./routes/dua.routes";
 
 const app = express();
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "development") {
 }
  
 // // Routes
-app.use('/api/v1/categories', categoryRoutes);
+app.use('/api/v1/dua-categories', duaCategoryRoutes);
 app.use('/api/v1/duas', duaRoutes);
 
 // Error Handling
