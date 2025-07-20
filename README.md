@@ -24,7 +24,7 @@ All endpoints return a JSON response in the following format:
 ## Category Endpoints
 
 ### Get All Categories
-- **URL:** `GET /api/v1/categories`
+- **URL:** `GET /api/v1/dua-categories`
 - **Response:**
   - `200 OK` with list of categories
   - `404 Not Found` if no categories
@@ -48,13 +48,13 @@ All endpoints return a JSON response in the following format:
 ```
 
 ### Get Category by ID
-- **URL:** `GET /api/v1/categories/:id`
+- **URL:** `GET /api/v1/dua-categories/:id`
 - **Response:**
   - `200 OK` with category object
   - `404 Not Found` if not found
 
 ### Get Subcategories by Category ID
-- **URL:** `GET /api/v1/categories/:id/subcategories`
+- **URL:** `GET /api/v1/dua-categories/:id/subcategories`
 - **Response:**
   - `200 OK` with list of subcategories
   - `404 Not Found` if not found
